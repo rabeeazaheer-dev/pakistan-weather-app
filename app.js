@@ -10,6 +10,178 @@ const pakistaniCities = [
     { name: 'Islamabad', lat: 33.6844, lon: 73.0479 }
 ];
 
+// Realistic Mock Weather Data for Pakistani Cities
+const mockWeatherData = {
+    'Faisalabad': {
+        name: 'Faisalabad',
+        main: {
+            temp: 32,
+            feels_like: 35,
+            humidity: 45,
+            pressure: 1009
+        },
+        weather: [
+            {
+                main: 'Clouds',
+                description: 'partly cloudy',
+                icon: '02d'
+            }
+        ],
+        wind: {
+            speed: 4.5 // m/s
+        },
+        clouds: {
+            all: 35
+        },
+        visibility: 8500,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600, // 6 hours ago
+            sunset: Math.floor(Date.now() / 1000) + 21600   // 6 hours later
+        }
+    },
+    'Lahore': {
+        name: 'Lahore',
+        main: {
+            temp: 34,
+            feels_like: 37,
+            humidity: 48,
+            pressure: 1008
+        },
+        weather: [
+            {
+                main: 'Clouds',
+                description: 'overcast clouds',
+                icon: '04d'
+            }
+        ],
+        wind: {
+            speed: 5.2 // m/s
+        },
+        clouds: {
+            all: 60
+        },
+        visibility: 7500,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        }
+    },
+    'Karachi': {
+        name: 'Karachi',
+        main: {
+            temp: 30,
+            feels_like: 32,
+            humidity: 62,
+            pressure: 1011
+        },
+        weather: [
+            {
+                main: 'Clouds',
+                description: 'few clouds',
+                icon: '02d'
+            }
+        ],
+        wind: {
+            speed: 6.8 // m/s (sea breeze)
+        },
+        clouds: {
+            all: 25
+        },
+        visibility: 9000,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        }
+    },
+    'Islamabad': {
+        name: 'Islamabad',
+        main: {
+            temp: 28,
+            feels_like: 30,
+            humidity: 52,
+            pressure: 1012
+        },
+        weather: [
+            {
+                main: 'Clear',
+                description: 'clear sky',
+                icon: '01d'
+            }
+        ],
+        wind: {
+            speed: 3.2 // m/s
+        },
+        clouds: {
+            all: 10
+        },
+        visibility: 10000,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        }
+    }
+};
+
+// Realistic Mock Forecast Data for Pakistani Cities
+const mockForecastData = {
+    'Faisalabad': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 86400 + 10800, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 35 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800 + 10800, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 34 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200 + 10800, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600 + 10800, main: { temp: 29 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000 + 10800, main: { temp: 28 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    },
+    'Lahore': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 35 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 86400 + 10800, main: { temp: 32 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 36 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800 + 10800, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 34 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200 + 10800, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 35 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600 + 10800, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 33 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000 + 10800, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    },
+    'Karachi': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 86400 + 10800, main: { temp: 28 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800 + 10800, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200 + 10800, main: { temp: 27 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 29 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600 + 10800, main: { temp: 26 }, weather: [{ main: 'Clouds', icon: '04d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 31 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000 + 10800, main: { temp: 28 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    },
+    'Islamabad': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 86400 + 10800, main: { temp: 25 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800 + 10800, main: { temp: 26 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 28 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200 + 10800, main: { temp: 24 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 27 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600 + 10800, main: { temp: 23 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000 + 10800, main: { temp: 25 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    }
+};
+
 // DOM Elements
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
@@ -22,6 +194,7 @@ const forecastContainer = document.getElementById('forecastContainer');
 let currentCity = 'Faisalabad';
 let weatherData = {};
 let forecastData = {};
+let useMockData = false;
 
 // Weather Icons Mapping
 const weatherIcons = {
@@ -141,7 +314,7 @@ function handleSearch() {
     }
 }
 
-// Fetch current weather data
+// Fetch current weather data with fallback to mock data
 async function fetchWeatherData(city) {
     try {
         // Find city coordinates
@@ -152,34 +325,69 @@ async function fetchWeatherData(city) {
             return;
         }
 
-        // Fetch current weather
-        const weatherResponse = await fetch(
-            `${BASE_URL}/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${API_KEY}`
-        );
+        // Try to fetch real weather data
+        let weatherResponse;
+        let forecastResponse;
+        let useRealData = false;
 
-        if (!weatherResponse.ok) {
-            throw new Error('Failed to fetch weather data');
+        try {
+            weatherResponse = await Promise.race([
+                fetch(`${BASE_URL}/weather?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${API_KEY}`),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('API timeout')), 8000))
+            ]);
+
+            if (weatherResponse.ok) {
+                forecastResponse = await Promise.race([
+                    fetch(`${BASE_URL}/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${API_KEY}`),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('API timeout')), 8000))
+                ]);
+
+                if (forecastResponse.ok) {
+                    weatherData = await weatherResponse.json();
+                    forecastData = await forecastResponse.json();
+                    useRealData = true;
+                    useMockData = false;
+                }
+            }
+        } catch (apiError) {
+            console.warn('Real API failed, using mock data:', apiError.message);
         }
 
-        weatherData = await weatherResponse.json();
-
-        // Fetch 5-day forecast
-        const forecastResponse = await fetch(
-            `${BASE_URL}/forecast?lat=${cityData.lat}&lon=${cityData.lon}&units=metric&appid=${API_KEY}`
-        );
-
-        if (!forecastResponse.ok) {
-            throw new Error('Failed to fetch forecast data');
+        // If real API fails, use mock data
+        if (!useRealData) {
+            weatherData = JSON.parse(JSON.stringify(mockWeatherData[cityData.name]));
+            forecastData = JSON.parse(JSON.stringify(mockForecastData[cityData.name]));
+            useMockData = true;
         }
-
-        forecastData = await forecastResponse.json();
 
         // Update UI
         updateWeatherDisplay();
         updateForecastDisplay();
+        
+        // Show status message if using mock data
+        if (useMockData) {
+            showInfo(`Using demo data for ${cityData.name} (API unavailable)`);
+        }
     } catch (error) {
         console.error('Error fetching weather data:', error);
-        showError(error.message || 'Failed to fetch weather data. Please try again.');
+        
+        // Final fallback: Use mock data for the city
+        try {
+            const cityData = pakistaniCities.find(c => c.name.toLowerCase() === city.toLowerCase());
+            if (cityData && mockWeatherData[cityData.name]) {
+                weatherData = JSON.parse(JSON.stringify(mockWeatherData[cityData.name]));
+                forecastData = JSON.parse(JSON.stringify(mockForecastData[cityData.name]));
+                useMockData = true;
+                updateWeatherDisplay();
+                updateForecastDisplay();
+                showInfo(`Using demo data for ${cityData.name}`);
+                return;
+            }
+        } catch (fallbackError) {
+            console.error('Fallback error:', fallbackError);
+        }
+
+        showError('Unable to load weather data. Please try again later.');
     }
 }
 
@@ -363,6 +571,30 @@ function showSuccess(message) {
     setTimeout(() => {
         successDiv.remove();
     }, 3000);
+}
+
+function showInfo(message) {
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'info-message';
+    infoDiv.style.cssText = `
+        background: rgba(59, 130, 246, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #93c5fd;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    `;
+    infoDiv.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+    
+    mainWeatherSection.parentElement.insertBefore(infoDiv, mainWeatherSection);
+    
+    // Remove info message after 4 seconds
+    setTimeout(() => {
+        infoDiv.remove();
+    }, 4000);
 }
 
 // Format time to 12-hour format
