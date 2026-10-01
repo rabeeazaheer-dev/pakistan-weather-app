@@ -8,10 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Background gradient -->
     <div class="background-gradient"></div>
 
-    <!-- Main Container -->
     <div class="container">
         <!-- Header Section -->
         <header class="header">
@@ -30,10 +28,11 @@
                     type="text" 
                     class="search-input" 
                     id="searchInput" 
-                    placeholder="Search any city, district, town, or area in Pakistan..."
+                    placeholder="Search any city, district, town, or area..."
                     autocomplete="off"
+                    spellcheck="false"
                 >
-                <button class="search-btn" id="searchBtn">
+                <button class="search-btn" id="searchBtn" type="button">
                     <i class="fas fa-search"></i>
                 </button>
                 <div class="suggestions-dropdown" id="suggestionsDropdown"></div>
@@ -43,7 +42,6 @@
         <!-- Main Weather Display -->
         <section class="main-weather" id="mainWeather">
             <div class="weather-card glassmorphism">
-                <!-- City Header -->
                 <div class="city-header">
                     <div>
                         <h2 class="city-name" id="cityName">Search for a location</h2>
@@ -54,7 +52,6 @@
                     </div>
                 </div>
 
-                <!-- Temperature Display -->
                 <div class="temperature-display">
                     <div class="temp-value">
                         <span id="temperature">--</span>
@@ -65,12 +62,9 @@
                     </div>
                 </div>
 
-                <!-- Weather Metrics Grid -->
                 <div class="metrics-grid">
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-droplet"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-droplet"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">Humidity</p>
                             <p class="metric-value"><span id="humidity">--</span>%</p>
@@ -78,9 +72,7 @@
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-wind"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-wind"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">Wind Speed</p>
                             <p class="metric-value"><span id="windSpeed">--</span> km/h</p>
@@ -88,9 +80,7 @@
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-gauge"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-gauge"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">Pressure</p>
                             <p class="metric-value"><span id="pressure">--</span> mb</p>
@@ -98,9 +88,7 @@
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-eye"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-eye"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">Visibility</p>
                             <p class="metric-value"><span id="visibility">--</span> km</p>
@@ -108,9 +96,7 @@
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-sun"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-sun"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">UV Index</p>
                             <p class="metric-value"><span id="uvIndex">--</span></p>
@@ -118,9 +104,7 @@
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-icon">
-                            <i class="fas fa-umbrella"></i>
-                        </div>
+                        <div class="metric-icon"><i class="fas fa-umbrella"></i></div>
                         <div class="metric-info">
                             <p class="metric-label">Rain Chance</p>
                             <p class="metric-value"><span id="rainChance">--</span>%</p>
@@ -128,20 +112,27 @@
                     </div>
                 </div>
 
-                <!-- Additional Info -->
                 <div class="additional-info">
                     <div class="info-item">
-                        <span class="info-label">
-                            <i class="fas fa-sunrise"></i> Sunrise
-                        </span>
+                        <span class="info-label"><i class="fas fa-sunrise"></i> Sunrise</span>
                         <span class="info-value" id="sunrise">--:--</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">
-                            <i class="fas fa-sunset"></i> Sunset
-                        </span>
+                        <span class="info-label"><i class="fas fa-sunset"></i> Sunset</span>
                         <span class="info-value" id="sunset">--:--</span>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 24-Hour Forecast Section -->
+        <section class="hourly-section">
+            <h3 class="section-title">
+                <i class="fas fa-clock"></i> 24-Hour Hourly Forecast
+            </h3>
+            <div class="hourly-container" id="hourlyContainer">
+                <div class="hourly-card glassmorphism">
+                    <p>Search for a location to view hourly forecast...</p>
                 </div>
             </div>
         </section>
@@ -152,17 +143,15 @@
                 <i class="fas fa-calendar-days"></i> 7-Day Forecast
             </h3>
             <div class="forecast-container" id="forecastContainer">
-                <!-- Forecast cards will be populated by JavaScript -->
                 <div class="forecast-card glassmorphism">
                     <p>Search for a location to see forecast...</p>
                 </div>
             </div>
         </section>
 
-        <!-- Footer -->
         <footer class="footer">
-            <p>Weather data powered by <strong>Open-Meteo</strong> (Free API)</p>
-            <p>© 2024 Pakistan Weather App | Designed with <i class="fas fa-heart"></i> for Pakistan</p>
+            <p>Weather data powered by <strong>Open-Meteo</strong></p>
+            <p>© 2026 Pakistan Weather App | Designed with <i class="fas fa-heart"></i> for Pakistan</p>
         </footer>
     </div>
 
