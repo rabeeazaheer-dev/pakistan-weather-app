@@ -19,7 +19,7 @@
                 <h1 class="title">
                     <i class="fas fa-cloud-sun"></i> Pakistan Weather
                 </h1>
-                <p class="subtitle">Real-time weather for all Pakistani cities</p>
+                <p class="subtitle">Real-time weather for any place in Pakistan</p>
             </div>
         </header>
 
@@ -30,7 +30,7 @@
                     type="text" 
                     class="search-input" 
                     id="searchInput" 
-                    placeholder="Search any Pakistani city... (Peshawar, Multan, Gujranwala, Hyderabad...)"
+                    placeholder="Search any city, district, town, or area in Pakistan..."
                     autocomplete="off"
                 >
                 <button class="search-btn" id="searchBtn">
@@ -40,39 +40,14 @@
             </div>
         </section>
 
-        <!-- Quick Access Cities -->
-        <section class="quick-cities">
-            <button class="city-btn active" data-city="Faisalabad" data-lat="31.4181" data-lon="72.3679">
-                <i class="fas fa-map-pin"></i> Faisalabad
-            </button>
-            <button class="city-btn" data-city="Lahore" data-lat="31.5497" data-lon="74.3436">
-                <i class="fas fa-map-pin"></i> Lahore
-            </button>
-            <button class="city-btn" data-city="Karachi" data-lat="24.8607" data-lon="67.0011">
-                <i class="fas fa-map-pin"></i> Karachi
-            </button>
-            <button class="city-btn" data-city="Islamabad" data-lat="33.6844" data-lon="73.0479">
-                <i class="fas fa-map-pin"></i> Islamabad
-            </button>
-            <button class="city-btn" data-city="Peshawar" data-lat="34.0151" data-lon="71.5797">
-                <i class="fas fa-map-pin"></i> Peshawar
-            </button>
-            <button class="city-btn" data-city="Quetta" data-lat="30.1798" data-lon="67.0097">
-                <i class="fas fa-map-pin"></i> Quetta
-            </button>
-            <button class="city-btn" data-city="Multan" data-lat="30.1575" data-lon="71.4454">
-                <i class="fas fa-map-pin"></i> Multan
-            </button>
-        </section>
-
         <!-- Main Weather Display -->
         <section class="main-weather" id="mainWeather">
             <div class="weather-card glassmorphism">
                 <!-- City Header -->
                 <div class="city-header">
                     <div>
-                        <h2 class="city-name" id="cityName">Loading...</h2>
-                        <p class="weather-description" id="weatherDesc">Please wait</p>
+                        <h2 class="city-name" id="cityName">Search for a location</h2>
+                        <p class="weather-description" id="weatherDesc">Enter any city, district, or area</p>
                     </div>
                     <div class="weather-icon-container">
                         <i class="weather-icon" id="weatherIcon"></i>
@@ -171,15 +146,15 @@
             </div>
         </section>
 
-        <!-- 5-Day Forecast Section -->
+        <!-- 7-Day Forecast Section -->
         <section class="forecast-section">
             <h3 class="section-title">
-                <i class="fas fa-calendar-days"></i> 5-Day Forecast
+                <i class="fas fa-calendar-days"></i> 7-Day Forecast
             </h3>
             <div class="forecast-container" id="forecastContainer">
                 <!-- Forecast cards will be populated by JavaScript -->
                 <div class="forecast-card glassmorphism">
-                    <p>Loading forecast...</p>
+                    <p>Search for a location to see forecast...</p>
                 </div>
             </div>
         </section>
