@@ -1,12 +1,16 @@
 // Weather App Configuration
 const BASE_URL = 'https://api.open-meteo.com/v1/forecast';
+const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 
-// Pakistani Cities Data
+// Pakistani Cities Data - Quick Access
 const pakistaniCities = [
     { name: 'Faisalabad', latitude: 31.4181, longitude: 72.3679 },
     { name: 'Lahore', latitude: 31.5497, longitude: 74.3436 },
     { name: 'Karachi', latitude: 24.8607, longitude: 67.0011 },
-    { name: 'Islamabad', latitude: 33.6844, longitude: 73.0479 }
+    { name: 'Islamabad', latitude: 33.6844, longitude: 73.0479 },
+    { name: 'Peshawar', latitude: 34.0151, longitude: 71.5797 },
+    { name: 'Quetta', latitude: 30.1798, longitude: 67.0097 },
+    { name: 'Multan', latitude: 30.1575, longitude: 71.4454 }
 ];
 
 // Realistic Mock Weather Data for Pakistani Cities
@@ -86,6 +90,63 @@ const mockWeatherData = {
         },
         uvIndex: 6.0,
         rainChance: 10
+    },
+    'Peshawar': {
+        name: 'Peshawar',
+        main: {
+            temp: 31,
+            feels_like: 33,
+            humidity: 50,
+            pressure: 1010
+        },
+        weather: [{ main: 'Partly Cloudy', description: 'partly cloudy', icon: '02d' }],
+        wind: { speed: 4.2 },
+        clouds: { all: 40 },
+        visibility: 8000,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        },
+        uvIndex: 6.8,
+        rainChance: 20
+    },
+    'Quetta': {
+        name: 'Quetta',
+        main: {
+            temp: 22,
+            feels_like: 24,
+            humidity: 35,
+            pressure: 1014
+        },
+        weather: [{ main: 'Clear', description: 'clear sky', icon: '01d' }],
+        wind: { speed: 3.8 },
+        clouds: { all: 5 },
+        visibility: 10000,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        },
+        uvIndex: 5.5,
+        rainChance: 5
+    },
+    'Multan': {
+        name: 'Multan',
+        main: {
+            temp: 33,
+            feels_like: 36,
+            humidity: 46,
+            pressure: 1009
+        },
+        weather: [{ main: 'Sunny', description: 'clear sky', icon: '01d' }],
+        wind: { speed: 4.8 },
+        clouds: { all: 10 },
+        visibility: 9500,
+        sys: {
+            sunrise: Math.floor(Date.now() / 1000) - 21600,
+            sunset: Math.floor(Date.now() / 1000) + 21600
+        },
+        uvIndex: 7.5,
+        rainChance: 15
     }
 };
 
@@ -125,6 +186,33 @@ const mockForecastData = {
             { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 27 }, weather: [{ main: 'Clouds', icon: '02d' }] },
             { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] }
         ]
+    },
+    'Peshawar': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 32 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 33 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    },
+    'Quetta': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 24 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 25 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 23 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 22 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 24 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
+    },
+    'Multan': {
+        list: [
+            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 34 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 35 }, weather: [{ main: 'Clear', icon: '01d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 32 }, weather: [{ main: 'Clouds', icon: '02d' }] },
+            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 34 }, weather: [{ main: 'Clear', icon: '01d' }] }
+        ]
     }
 };
 
@@ -138,9 +226,11 @@ const forecastContainer = document.getElementById('forecastContainer');
 
 // State Management
 let currentCity = 'Faisalabad';
+let currentCityCoords = { lat: 31.4181, lon: 72.3679 };
 let weatherData = {};
 let forecastData = {};
 let useMockData = false;
+let searchCache = {};
 
 // Weather Icons Mapping
 const weatherIcons = {
@@ -175,22 +265,15 @@ const weatherCodeMap = {
     51: { main: 'Drizzle', description: 'light drizzle', iconDay: '09d', iconNight: '09n' },
     53: { main: 'Drizzle', description: 'moderate drizzle', iconDay: '09d', iconNight: '09n' },
     55: { main: 'Drizzle', description: 'dense drizzle', iconDay: '09d', iconNight: '09n' },
-    56: { main: 'Freezing Drizzle', description: 'freezing drizzle', iconDay: '09d', iconNight: '09n' },
-    57: { main: 'Freezing Drizzle', description: 'heavy freezing drizzle', iconDay: '09d', iconNight: '09n' },
     61: { main: 'Rain', description: 'light rain', iconDay: '10d', iconNight: '10n' },
     63: { main: 'Rain', description: 'moderate rain', iconDay: '10d', iconNight: '10n' },
     65: { main: 'Rain', description: 'heavy rain', iconDay: '10d', iconNight: '10n' },
-    66: { main: 'Freezing Rain', description: 'light freezing rain', iconDay: '10d', iconNight: '10n' },
-    67: { main: 'Freezing Rain', description: 'heavy freezing rain', iconDay: '10d', iconNight: '10n' },
     71: { main: 'Snow', description: 'light snow', iconDay: '13d', iconNight: '13n' },
     73: { main: 'Snow', description: 'moderate snow', iconDay: '13d', iconNight: '13n' },
     75: { main: 'Snow', description: 'heavy snow', iconDay: '13d', iconNight: '13n' },
-    77: { main: 'Snow', description: 'snow grains', iconDay: '13d', iconNight: '13n' },
     80: { main: 'Rain Showers', description: 'light showers', iconDay: '09d', iconNight: '09n' },
     81: { main: 'Rain Showers', description: 'moderate showers', iconDay: '09d', iconNight: '09n' },
     82: { main: 'Rain Showers', description: 'violent showers', iconDay: '09d', iconNight: '09n' },
-    85: { main: 'Snow Showers', description: 'light snow showers', iconDay: '13d', iconNight: '13n' },
-    86: { main: 'Snow Showers', description: 'heavy snow showers', iconDay: '13d', iconNight: '13n' },
     95: { main: 'Thunderstorm', description: 'thunderstorm', iconDay: '11d', iconNight: '11n' },
     96: { main: 'Thunderstorm', description: 'thunderstorm with hail', iconDay: '11d', iconNight: '11n' },
     99: { main: 'Thunderstorm', description: 'heavy thunderstorm with hail', iconDay: '11d', iconNight: '11n' }
@@ -203,7 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializeApp() {
-    fetchWeatherData(currentCity);
+    fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
 }
 
 function setupEventListeners() {
@@ -218,9 +301,13 @@ function setupEventListeners() {
             cityButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             currentCity = btn.dataset.city;
+            currentCityCoords = {
+                lat: parseFloat(btn.dataset.lat),
+                lon: parseFloat(btn.dataset.lon)
+            };
             searchInput.value = '';
             suggestionsDropdown.classList.remove('active');
-            fetchWeatherData(currentCity);
+            fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
         });
     });
 
@@ -231,34 +318,54 @@ function setupEventListeners() {
     });
 }
 
-function handleSearchInput(e) {
-    const query = e.target.value.trim().toLowerCase();
+async function handleSearchInput(e) {
+    const query = e.target.value.trim();
 
-    if (query.length === 0) {
+    if (query.length < 2) {
         suggestionsDropdown.classList.remove('active');
         return;
     }
 
-    const suggestions = pakistaniCities.filter(city =>
-        city.name.toLowerCase().includes(query)
-    );
+    try {
+        // Check cache first
+        if (searchCache[query]) {
+            displayGeocodesSuggestions(searchCache[query]);
+            return;
+        }
 
-    if (suggestions.length > 0) {
-        displaySuggestions(suggestions);
-    } else {
+        const geoResponse = await fetch(
+            `${GEOCODING_URL}?name=${encodeURIComponent(query)}&country=Pakistan&language=en`
+        );
+
+        if (!geoResponse.ok) {
+            throw new Error('Geocoding failed');
+        }
+
+        const geoData = await geoResponse.json();
+
+        if (geoData.results && geoData.results.length > 0) {
+            // Cache the results
+            searchCache[query] = geoData.results;
+            displayGeocodesSuggestions(geoData.results);
+        } else {
+            suggestionsDropdown.classList.remove('active');
+        }
+    } catch (error) {
+        console.warn('Geocoding search error:', error.message);
         suggestionsDropdown.classList.remove('active');
     }
 }
 
-function displaySuggestions(suggestions) {
+function displayGeocodesSuggestions(results) {
     suggestionsDropdown.innerHTML = '';
 
-    suggestions.forEach(city => {
+    results.slice(0, 8).forEach(result => {
         const item = document.createElement('div');
         item.className = 'suggestion-item';
-        item.innerHTML = `<i class="fas fa-map-pin"></i> ${city.name}`;
+        const adminName = result.admin1 ? `, ${result.admin1}` : '';
+        item.innerHTML = `<i class="fas fa-map-pin"></i> ${result.name}${adminName}`;
         item.addEventListener('click', () => {
-            selectCity(city.name);
+            selectGeocodedCity(result.name, result.latitude, result.longitude);
         });
         suggestionsDropdown.appendChild(item);
     });
@@ -266,38 +373,30 @@ function displaySuggestions(suggestions) {
     suggestionsDropdown.classList.add('active');
 }
 
-function selectCity(cityName) {
+function selectGeocodedCity(cityName, latitude, longitude) {
     currentCity = cityName;
+    currentCityCoords = { lat: latitude, lon: longitude };
     searchInput.value = '';
     suggestionsDropdown.classList.remove('active');
 
+    // Update active button
     cityButtons.forEach(btn => {
         btn.classList.remove('active');
-        if (btn.dataset.city === cityName) {
-            btn.classList.add('active');
-        }
     });
 
-    fetchWeatherData(cityName);
+    fetchWeatherData(cityName, latitude, longitude);
 }
 
 function handleSearch() {
     const query = searchInput.value.trim();
     if (query.length > 0) {
-        selectCity(query);
+        handleSearchInput({ target: searchInput });
     }
 }
 
-async function fetchWeatherData(city) {
+async function fetchWeatherData(city, latitude, longitude) {
     try {
-        const cityData = pakistaniCities.find(c => c.name.toLowerCase() === city.toLowerCase());
-
-        if (!cityData) {
-            showError(`City "${city}" not found. Please use: Faisalabad, Lahore, Karachi, or Islamabad`);
-            return;
-        }
-
-        const weatherUrl = `${BASE_URL}?latitude=${cityData.latitude}&longitude=${cityData.longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,pressure_msl,weather_code,wind_speed_10m,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=5`;
+        const weatherUrl = `${BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,pressure_msl,weather_code,wind_speed_10m,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=5`;
 
         const response = await fetch(weatherUrl, { method: 'GET' });
 
@@ -318,7 +417,7 @@ async function fetchWeatherData(city) {
         const dayIcon = current.is_day === 1 ? condition.iconDay : condition.iconNight;
 
         weatherData = {
-            name: cityData.name,
+            name: city,
             main: {
                 temp: current.temperature_2m,
                 feels_like: current.apparent_temperature,
@@ -367,6 +466,7 @@ async function fetchWeatherData(city) {
     } catch (error) {
         console.warn('Live weather fetch failed:', error.message);
 
+        // Try fallback with mock data if city is in our list
         const fallbackCity = pakistaniCities.find(c => c.name.toLowerCase() === city.toLowerCase());
         if (fallbackCity && mockWeatherData[fallbackCity.name]) {
             weatherData = JSON.parse(JSON.stringify(mockWeatherData[fallbackCity.name]));
@@ -606,7 +706,7 @@ function formatDate(dateString) {
 }
 
 setInterval(() => {
-    if (currentCity) {
-        fetchWeatherData(currentCity);
+    if (currentCity && currentCityCoords.lat && currentCityCoords.lon) {
+        fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
     }
 }, 600000);
