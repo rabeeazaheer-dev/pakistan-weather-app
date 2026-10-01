@@ -1,712 +1,292 @@
-// Weather App Configuration
-const BASE_URL = 'https://api.open-meteo.com/v1/forecast';
-const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
-
-// Pakistani Cities Data - Quick Access
-const pakistaniCities = [
-    { name: 'Faisalabad', latitude: 31.4181, longitude: 72.3679 },
-    { name: 'Lahore', latitude: 31.5497, longitude: 74.3436 },
-    { name: 'Karachi', latitude: 24.8607, longitude: 67.0011 },
-    { name: 'Islamabad', latitude: 33.6844, longitude: 73.0479 },
-    { name: 'Peshawar', latitude: 34.0151, longitude: 71.5797 },
-    { name: 'Quetta', latitude: 30.1798, longitude: 67.0097 },
-    { name: 'Multan', latitude: 30.1575, longitude: 71.4454 }
-];
-
-// Realistic Mock Weather Data for Pakistani Cities
-const mockWeatherData = {
-    'Faisalabad': {
-        name: 'Faisalabad',
-        main: {
-            temp: 32,
-            feels_like: 35,
-            humidity: 45,
-            pressure: 1009
-        },
-        weather: [{ main: 'Clouds', description: 'partly cloudy', icon: '02d' }],
-        wind: { speed: 4.5 },
-        clouds: { all: 35 },
-        visibility: 8500,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 6.5,
-        rainChance: 25
-    },
-    'Lahore': {
-        name: 'Lahore',
-        main: {
-            temp: 34,
-            feels_like: 37,
-            humidity: 48,
-            pressure: 1008
-        },
-        weather: [{ main: 'Clouds', description: 'overcast clouds', icon: '04d' }],
-        wind: { speed: 5.2 },
-        clouds: { all: 60 },
-        visibility: 7500,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 7.2,
-        rainChance: 30
-    },
-    'Karachi': {
-        name: 'Karachi',
-        main: {
-            temp: 30,
-            feels_like: 32,
-            humidity: 62,
-            pressure: 1011
-        },
-        weather: [{ main: 'Clouds', description: 'few clouds', icon: '02d' }],
-        wind: { speed: 6.8 },
-        clouds: { all: 25 },
-        visibility: 9000,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 7.0,
-        rainChance: 20
-    },
-    'Islamabad': {
-        name: 'Islamabad',
-        main: {
-            temp: 28,
-            feels_like: 30,
-            humidity: 52,
-            pressure: 1012
-        },
-        weather: [{ main: 'Clear', description: 'clear sky', icon: '01d' }],
-        wind: { speed: 3.2 },
-        clouds: { all: 10 },
-        visibility: 10000,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 6.0,
-        rainChance: 10
-    },
-    'Peshawar': {
-        name: 'Peshawar',
-        main: {
-            temp: 31,
-            feels_like: 33,
-            humidity: 50,
-            pressure: 1010
-        },
-        weather: [{ main: 'Partly Cloudy', description: 'partly cloudy', icon: '02d' }],
-        wind: { speed: 4.2 },
-        clouds: { all: 40 },
-        visibility: 8000,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 6.8,
-        rainChance: 20
-    },
-    'Quetta': {
-        name: 'Quetta',
-        main: {
-            temp: 22,
-            feels_like: 24,
-            humidity: 35,
-            pressure: 1014
-        },
-        weather: [{ main: 'Clear', description: 'clear sky', icon: '01d' }],
-        wind: { speed: 3.8 },
-        clouds: { all: 5 },
-        visibility: 10000,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 5.5,
-        rainChance: 5
-    },
-    'Multan': {
-        name: 'Multan',
-        main: {
-            temp: 33,
-            feels_like: 36,
-            humidity: 46,
-            pressure: 1009
-        },
-        weather: [{ main: 'Sunny', description: 'clear sky', icon: '01d' }],
-        wind: { speed: 4.8 },
-        clouds: { all: 10 },
-        visibility: 9500,
-        sys: {
-            sunrise: Math.floor(Date.now() / 1000) - 21600,
-            sunset: Math.floor(Date.now() / 1000) + 21600
-        },
-        uvIndex: 7.5,
-        rainChance: 15
-    }
-};
-
-const mockForecastData = {
-    'Faisalabad': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 35 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 34 }, weather: [{ main: 'Clouds', icon: '04d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Lahore': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 35 }, weather: [{ main: 'Clouds', icon: '04d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 36 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 34 }, weather: [{ main: 'Clouds', icon: '04d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 35 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 33 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Karachi': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 29 }, weather: [{ main: 'Clouds', icon: '04d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 31 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Islamabad': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 28 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 27 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 29 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Peshawar': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 32 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 33 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 31 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 30 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 32 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Quetta': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 24 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 25 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 23 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 22 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 24 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    },
-    'Multan': {
-        list: [
-            { dt: Math.floor(Date.now() / 1000) + 86400, main: { temp: 34 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 172800, main: { temp: 35 }, weather: [{ main: 'Clear', icon: '01d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 259200, main: { temp: 33 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 345600, main: { temp: 32 }, weather: [{ main: 'Clouds', icon: '02d' }] },
-            { dt: Math.floor(Date.now() / 1000) + 432000, main: { temp: 34 }, weather: [{ main: 'Clear', icon: '01d' }] }
-        ]
-    }
+// Weather code to emoji mapping
+const getWeatherEmoji = (code) => {
+    if (code === 0 || code === 1) return '☀️'; // Clear, Mainly clear
+    if (code === 2) return '⛅'; // Partly cloudy
+    if (code === 3 || code === 45 || code === 48) return '☁️'; // Overcast, Foggy
+    if (code >= 51 && code <= 67) return '🌧️'; // Drizzle, Rain
+    if (code >= 71 && code <= 77) return '❄️'; // Snow
+    if (code === 80 || code === 81 || code === 82) return '🌦️'; // Rain showers
+    if (code === 85 || code === 86) return '🌨️'; // Snow showers
+    if (code >= 95 && code <= 99) return '⛈️'; // Thunderstorm
+    return '🌤️';
 };
 
 // DOM Elements
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
 const suggestionsDropdown = document.getElementById('suggestionsDropdown');
-const cityButtons = document.querySelectorAll('.city-btn');
-const mainWeatherSection = document.getElementById('mainWeather');
-const forecastContainer = document.getElementById('forecastContainer');
 
-// State Management
-let currentCity = 'Faisalabad';
-let currentCityCoords = { lat: 31.4181, lon: 72.3679 };
-let weatherData = {};
-let forecastData = {};
-let useMockData = false;
-let searchCache = {};
+let suggestionsCache = {};
+let currentSuggestions = [];
 
-// Weather Icons Mapping
-const weatherIcons = {
-    '01d': 'fas fa-sun',
-    '01n': 'fas fa-moon',
-    '02d': 'fas fa-cloud-sun',
-    '02n': 'fas fa-cloud-moon',
-    '03d': 'fas fa-cloud',
-    '03n': 'fas fa-cloud',
-    '04d': 'fas fa-cloud',
-    '04n': 'fas fa-cloud',
-    '09d': 'fas fa-cloud-rain',
-    '09n': 'fas fa-cloud-rain',
-    '10d': 'fas fa-cloud-sun-rain',
-    '10n': 'fas fa-cloud-moon-rain',
-    '11d': 'fas fa-bolt',
-    '11n': 'fas fa-bolt',
-    '13d': 'fas fa-snowflake',
-    '13n': 'fas fa-snowflake',
-    '50d': 'fas fa-smog',
-    '50n': 'fas fa-smog'
-};
+searchInput.addEventListener('input', handleSearchInput);
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSearch();
+    }
+});
+searchBtn.addEventListener('click', handleSearch);
 
-// Open-Meteo weather code mappings
-const weatherCodeMap = {
-    0: { main: 'Clear', description: 'clear sky', iconDay: '01d', iconNight: '01n' },
-    1: { main: 'Mainly Clear', description: 'mainly clear', iconDay: '02d', iconNight: '02n' },
-    2: { main: 'Partly Cloudy', description: 'partly cloudy', iconDay: '02d', iconNight: '02n' },
-    3: { main: 'Cloudy', description: 'cloudy', iconDay: '03d', iconNight: '03n' },
-    45: { main: 'Fog', description: 'foggy', iconDay: '50d', iconNight: '50n' },
-    48: { main: 'Depositing Fog', description: 'heavy fog', iconDay: '50d', iconNight: '50n' },
-    51: { main: 'Drizzle', description: 'light drizzle', iconDay: '09d', iconNight: '09n' },
-    53: { main: 'Drizzle', description: 'moderate drizzle', iconDay: '09d', iconNight: '09n' },
-    55: { main: 'Drizzle', description: 'dense drizzle', iconDay: '09d', iconNight: '09n' },
-    61: { main: 'Rain', description: 'light rain', iconDay: '10d', iconNight: '10n' },
-    63: { main: 'Rain', description: 'moderate rain', iconDay: '10d', iconNight: '10n' },
-    65: { main: 'Rain', description: 'heavy rain', iconDay: '10d', iconNight: '10n' },
-    71: { main: 'Snow', description: 'light snow', iconDay: '13d', iconNight: '13n' },
-    73: { main: 'Snow', description: 'moderate snow', iconDay: '13d', iconNight: '13n' },
-    75: { main: 'Snow', description: 'heavy snow', iconDay: '13d', iconNight: '13n' },
-    80: { main: 'Rain Showers', description: 'light showers', iconDay: '09d', iconNight: '09n' },
-    81: { main: 'Rain Showers', description: 'moderate showers', iconDay: '09d', iconNight: '09n' },
-    82: { main: 'Rain Showers', description: 'violent showers', iconDay: '09d', iconNight: '09n' },
-    95: { main: 'Thunderstorm', description: 'thunderstorm', iconDay: '11d', iconNight: '11n' },
-    96: { main: 'Thunderstorm', description: 'thunderstorm with hail', iconDay: '11d', iconNight: '11n' },
-    99: { main: 'Thunderstorm', description: 'heavy thunderstorm with hail', iconDay: '11d', iconNight: '11n' }
-};
-
-// Initialize App
-document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
-    setupEventListeners();
+document.addEventListener('click', (e) => {
+    if (e.target !== searchInput && !e.target.closest('.suggestions-dropdown')) {
+        suggestionsDropdown.classList.remove('active');
+    }
 });
 
-function initializeApp() {
-    fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
-}
-
-function setupEventListeners() {
-    searchBtn.addEventListener('click', handleSearch);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSearch();
-    });
-    searchInput.addEventListener('input', handleSearchInput);
-
-    cityButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            cityButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentCity = btn.dataset.city;
-            currentCityCoords = {
-                lat: parseFloat(btn.dataset.lat),
-                lon: parseFloat(btn.dataset.lon)
-            };
-            searchInput.value = '';
-            suggestionsDropdown.classList.remove('active');
-            fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
-        });
-    });
-
-    document.addEventListener('click', (e) => {
-        if (e.target !== searchInput && e.target !== suggestionsDropdown) {
-            suggestionsDropdown.classList.remove('active');
-        }
-    });
-}
-
 async function handleSearchInput(e) {
-    const query = e.target.value.trim();
+    const query = searchInput.value;
+    const trimmedQuery = query.trim();
 
-    if (query.length < 2) {
+    if (trimmedQuery.length < 2) {
         suggestionsDropdown.classList.remove('active');
+        currentSuggestions = [];
         return;
     }
 
     try {
-        // Check cache first
-        if (searchCache[query]) {
-            displayGeocodesSuggestions(searchCache[query]);
+        if (suggestionsCache[trimmedQuery]) {
+            currentSuggestions = suggestionsCache[trimmedQuery];
+            displaySuggestions(currentSuggestions);
             return;
         }
 
-        const geoResponse = await fetch(
-            `${GEOCODING_URL}?name=${encodeURIComponent(query)}&country=Pakistan&language=en`
+        const response = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(trimmedQuery)}&count=5&language=en&format=json`
         );
 
-        if (!geoResponse.ok) {
-            throw new Error('Geocoding failed');
-        }
+        if (!response.ok) throw new Error('Geocoding API failed');
 
-        const geoData = await geoResponse.json();
+        const data = await response.json();
 
-        if (geoData.results && geoData.results.length > 0) {
-            // Cache the results
-            searchCache[query] = geoData.results;
-            displayGeocodesSuggestions(geoData.results);
+        if (data.results && data.results.length > 0) {
+            suggestionsCache[trimmedQuery] = data.results;
+            currentSuggestions = data.results;
+            displaySuggestions(data.results);
         } else {
+            currentSuggestions = [];
             suggestionsDropdown.classList.remove('active');
         }
     } catch (error) {
-        console.warn('Geocoding search error:', error.message);
+        console.error('Search error:', error);
         suggestionsDropdown.classList.remove('active');
     }
 }
 
-function displayGeocodesSuggestions(results) {
+function displaySuggestions(results) {
     suggestionsDropdown.innerHTML = '';
 
-    results.slice(0, 8).forEach(result => {
+    results.forEach((result) => {
         const item = document.createElement('div');
         item.className = 'suggestion-item';
-        const adminName = result.admin1 ? `, ${result.admin1}` : '';
-        item.innerHTML = `<i class="fas fa-map-pin"></i> ${result.name}${adminName}`;
-        item.addEventListener('click', () => {
-            selectGeocodedCity(result.name, result.latitude, result.longitude);
-        });
+
+        let locationName = result.name;
+        if (result.admin1) locationName += `, ${result.admin1}`;
+        if (result.country) locationName += `, ${result.country}`;
+
+        item.innerHTML = `<i class="fas fa-map-pin"></i> ${locationName}`;
+        item.addEventListener('click', () => selectLocation(result));
         suggestionsDropdown.appendChild(item);
     });
 
     suggestionsDropdown.classList.add('active');
 }
 
-function selectGeocodedCity(cityName, latitude, longitude) {
-    currentCity = cityName;
-    currentCityCoords = { lat: latitude, lon: longitude };
-    searchInput.value = '';
+function selectLocation(location) {
+    let displayName = location.name;
+    if (location.admin1) displayName += `, ${location.admin1}`;
+    searchInput.value = displayName;
     suggestionsDropdown.classList.remove('active');
 
-    // Update active button
-    cityButtons.forEach(btn => {
-        btn.classList.remove('active');
-    });
-
-    fetchWeatherData(cityName, latitude, longitude);
+    fetchWeatherData(location.latitude, location.longitude, displayName);
 }
 
-function handleSearch() {
+async function handleSearch() {
     const query = searchInput.value.trim();
-    if (query.length > 0) {
-        handleSearchInput({ target: searchInput });
+    if (!query) return;
+
+    suggestionsDropdown.classList.remove('active');
+
+    if (currentSuggestions.length > 0) {
+        selectLocation(currentSuggestions[0]);
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query)}&count=1&language=en&format=json`
+        );
+        const data = await response.json();
+
+        if (data.results && data.results.length > 0) {
+            selectLocation(data.results[0]);
+        } else {
+            alert('Location not found. Please try another search.');
+        }
+    } catch (err) {
+        console.error(err);
+        alert('Error finding location.');
     }
 }
 
-async function fetchWeatherData(city, latitude, longitude) {
+async function fetchWeatherData(latitude, longitude, cityName) {
     try {
-        const weatherUrl = `${BASE_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,pressure_msl,weather_code,wind_speed_10m,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto&forecast_days=5`;
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,pressure_msl,weather_code,wind_speed_10m,visibility&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max,precipitation_sum,uv_index_max&timezone=auto&forecast_days=7`;
 
-        const response = await fetch(weatherUrl, { method: 'GET' });
-
-        if (!response.ok) {
-            throw new Error('Open-Meteo request failed');
-        }
+        const response = await fetch(weatherUrl);
+        if (!response.ok) throw new Error('Weather API failed');
 
         const data = await response.json();
         const current = data.current;
         const daily = data.daily;
+        const hourly = data.hourly;
 
-        if (!current || !daily) {
-            throw new Error('Incomplete weather payload');
-        }
+        if (!current || !daily || !hourly) throw new Error('Incomplete weather data');
 
-        const weatherCode = current.weather_code;
-        const condition = weatherCodeMap[weatherCode] || weatherCodeMap[0];
-        const dayIcon = current.is_day === 1 ? condition.iconDay : condition.iconNight;
-
-        weatherData = {
-            name: city,
-            main: {
-                temp: current.temperature_2m,
-                feels_like: current.apparent_temperature,
-                humidity: current.relative_humidity_2m,
-                pressure: current.pressure_msl
-            },
-            weather: [{
-                main: condition.main,
-                description: condition.description,
-                icon: dayIcon
-            }],
-            wind: { speed: current.wind_speed_10m },
-            clouds: { all: getCloudEstimate(current.weather_code) },
-            visibility: current.visibility || 8000,
-            sys: {
-                sunrise: new Date(daily.sunrise[0]).getTime() / 1000,
-                sunset: new Date(daily.sunset[0]).getTime() / 1000
-            },
-            uvIndex: Number(daily.uv_index_max?.[0] ?? 6),
-            rainChance: getRainChanceFromCode(current.weather_code)
-        };
-
-        forecastData = {
-            list: daily.time.map((dateString, index) => {
-                const code = daily.weather_code[index];
-                const weather = weatherCodeMap[code] || weatherCodeMap[0];
-                const tempMax = daily.temperature_2m_max[index];
-                const tempMin = daily.temperature_2m_min[index];
-
-                return {
-                    dt: new Date(dateString).getTime() / 1000,
-                    main: {
-                        temp: Math.round((tempMax + tempMin) / 2)
-                    },
-                    weather: [{
-                        main: weather.main,
-                        icon: weather.iconDay
-                    }]
-                };
-            })
-        };
-
-        useMockData = false;
-        updateWeatherDisplay();
-        updateForecastDisplay();
+        updateWeatherDisplay(cityName, current, daily);
+        updateHourlyDisplay(hourly, current, daily);
+        updateForecastDisplay(daily);
     } catch (error) {
-        console.warn('Live weather fetch failed:', error.message);
-
-        // Try fallback with mock data if city is in our list
-        const fallbackCity = pakistaniCities.find(c => c.name.toLowerCase() === city.toLowerCase());
-        if (fallbackCity && mockWeatherData[fallbackCity.name]) {
-            weatherData = JSON.parse(JSON.stringify(mockWeatherData[fallbackCity.name]));
-            forecastData = JSON.parse(JSON.stringify(mockForecastData[fallbackCity.name]));
-            useMockData = true;
-            updateWeatherDisplay();
-            updateForecastDisplay();
-            return;
-        }
-
-        showError('Unable to load weather data. Please try again later.');
+        console.error('Weather fetch error:', error);
+        alert('Error fetching weather data. Please try again.');
     }
 }
 
-function updateWeatherDisplay() {
-    const { name, main, weather, wind, clouds, sys, visibility } = weatherData;
-    const feelsLike = main.feels_like;
-    const temp = Math.round(main.temp);
-    const humidity = main.humidity;
-    const pressure = main.pressure;
-    const windSpeed = Math.round(wind.speed * 3.6);
-    const desc = weather[0].main;
-    const iconCode = weather[0].icon;
-    const uvIndex = Number(weatherData.uvIndex ?? getUVIndex(main.temp, clouds.all));
-    const rainChance = Number(weatherData.rainChance ?? getRainChance(weather[0].main));
+function updateWeatherDisplay(cityName, current, daily) {
+    const weatherCode = current.weather_code;
+    const emoji = getWeatherEmoji(weatherCode);
 
-    document.getElementById('cityName').textContent = name;
-    document.getElementById('weatherDesc').textContent = desc;
-    document.getElementById('temperature').textContent = temp;
-    document.getElementById('feelsLike').textContent = Math.round(feelsLike);
-    document.getElementById('humidity').textContent = humidity;
-    document.getElementById('windSpeed').textContent = windSpeed;
-    document.getElementById('pressure').textContent = pressure;
-    document.getElementById('visibility').textContent = (Number(visibility || 8000) / 1000).toFixed(1);
-    document.getElementById('uvIndex').textContent = uvIndex.toFixed(1);
-    document.getElementById('rainChance').textContent = rainChance;
+    const getWeatherDescription = (code) => {
+        if (code === 0) return 'Clear sky';
+        if (code === 1) return 'Mainly clear';
+        if (code === 2) return 'Partly cloudy';
+        if (code === 3) return 'Overcast';
+        if (code === 45 || code === 48) return 'Foggy';
+        if (code >= 51 && code <= 67) return 'Rainy';
+        if ((code >= 71 && code <= 77) || code === 85 || code === 86) return 'Snowy';
+        if (code >= 80 && code <= 82) return 'Rain showers';
+        if (code >= 95 && code <= 99) return 'Thunderstorm';
+        return 'Weather';
+    };
 
-    const iconElement = document.getElementById('weatherIcon');
-    iconElement.className = 'weather-icon ' + (weatherIcons[iconCode] || 'fas fa-cloud');
+    document.getElementById('cityName').textContent = cityName;
+    document.getElementById('weatherDesc').textContent = getWeatherDescription(weatherCode);
+    document.getElementById('weatherIcon').textContent = emoji;
 
-    const sunrise = new Date(sys.sunrise * 1000).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
-    const sunset = new Date(sys.sunset * 1000).toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
+    document.getElementById('temperature').textContent = Math.round(current.temperature_2m);
+    document.getElementById('feelsLike').textContent = Math.round(current.apparent_temperature);
 
-    document.getElementById('sunrise').textContent = sunrise;
-    document.getElementById('sunset').textContent = sunset;
+    document.getElementById('humidity').textContent = current.relative_humidity_2m;
+    document.getElementById('windSpeed').textContent = Math.round(current.wind_speed_10m);
+    document.getElementById('pressure').textContent = Math.round(current.pressure_msl);
+
+    const visibility = current.visibility ? Math.round(current.visibility / 1000) : 10;
+    document.getElementById('visibility').textContent = visibility;
+
+    document.getElementById('uvIndex').textContent = daily.uv_index_max[0]
+        ? (Math.round(daily.uv_index_max[0] * 10) / 10).toFixed(1)
+        : 'N/A';
+
+    let rainChanceToday = 0;
+    if (daily.precipitation_probability_max && daily.precipitation_probability_max[0] !== undefined) {
+        rainChanceToday = daily.precipitation_probability_max[0];
+    } else if (daily.precipitation_sum && daily.precipitation_sum[0] > 0) {
+        rainChanceToday = Math.min(Math.round(daily.precipitation_sum[0] * 20), 100);
+    }
+    document.getElementById('rainChance').textContent = rainChanceToday;
+
+    const formatTime = (timeStr) => {
+        const date = new Date(timeStr);
+        return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+    };
+
+    document.getElementById('sunrise').textContent = formatTime(daily.sunrise[0]);
+    document.getElementById('sunset').textContent = formatTime(daily.sunset[0]);
 }
 
-function updateForecastDisplay() {
-    const dailyForecasts = {};
+// 24 Hours Forecast Update Logic (First card is "Now", followed by live next hours)
+function updateHourlyDisplay(hourly, current, daily) {
+    const hourlyContainer = document.getElementById('hourlyContainer');
+    hourlyContainer.innerHTML = '';
 
-    forecastData.list.forEach(forecast => {
-        const date = new Date(forecast.dt * 1000).toLocaleDateString();
+    const now = new Date();
+    const currentHourIndex = hourly.time.findIndex(timeStr => new Date(timeStr) >= now);
+    const startIndex = currentHourIndex !== -1 ? currentHourIndex : 0;
 
-        if (!dailyForecasts[date]) {
-            dailyForecasts[date] = [];
-        }
-        dailyForecasts[date].push(forecast);
-    });
+    // First card - "Now"
+    const nowTemp = Math.round(current.temperature_2m);
+    const nowEmoji = getWeatherEmoji(current.weather_code);
+    let nowRain = (hourly.precipitation_probability && hourly.precipitation_probability[startIndex]) !== undefined 
+        ? hourly.precipitation_probability[startIndex] 
+        : (daily.precipitation_probability_max ? daily.precipitation_probability_max[0] : 0);
 
-    const days = Object.keys(dailyForecasts).slice(0, 5);
+    const nowCard = document.createElement('div');
+    nowCard.className = 'hourly-card glassmorphism active-now';
+    nowCard.innerHTML = `
+        <div class="hourly-time" style="color: #0284c7; font-weight: 800;">Now</div>
+        <div class="hourly-icon">${nowEmoji}</div>
+        <div class="hourly-temp">${nowTemp}°C</div>
+        <div class="hourly-rain"><i class="fas fa-droplet"></i> ${nowRain}%</div>
+    `;
+    hourlyContainer.appendChild(nowCard);
+
+    // Remaining 23 hours
+    for (let i = startIndex + 1; i < startIndex + 24 && i < hourly.time.length; i++) {
+        const date = new Date(hourly.time[i]);
+        const timeFormatted = date.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true });
+        const temp = Math.round(hourly.temperature_2m[i]);
+        const emoji = getWeatherEmoji(hourly.weather_code[i]);
+        const rainProb = hourly.precipitation_probability ? hourly.precipitation_probability[i] : 0;
+
+        const card = document.createElement('div');
+        card.className = 'hourly-card glassmorphism';
+        card.innerHTML = `
+            <div class="hourly-time">${timeFormatted}</div>
+            <div class="hourly-icon">${emoji}</div>
+            <div class="hourly-temp">${temp}°C</div>
+            <div class="hourly-rain"><i class="fas fa-droplet"></i> ${rainProb}%</div>
+        `;
+        hourlyContainer.appendChild(card);
+    }
+}
+
+// 7-Day Forecast Cards Logic
+function updateForecastDisplay(daily) {
+    const forecastContainer = document.getElementById('forecastContainer');
     forecastContainer.innerHTML = '';
 
-    days.forEach(date => {
-        const forecasts = dailyForecasts[date];
-        const temps = forecasts.map(f => f.main.temp);
-        const maxTemp = Math.round(Math.max(...temps));
-        const minTemp = Math.round(Math.min(...temps));
-        const conditions = forecasts.map(f => f.weather[0].main);
-        const mainCondition = getMostCommon(conditions);
-        const iconCode = forecasts[0].weather[0].icon;
-        const icon = weatherIcons[iconCode] || 'fas fa-cloud';
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(daily.time[i]);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 
-        const dateObj = new Date(date);
-        const formattedDate = dateObj.toLocaleDateString('en-US', {
-            month: 'short',
-            day: 'numeric',
-            weekday: 'short'
-        });
+        const maxTemp = Math.round(daily.temperature_2m_max[i]);
+        const minTemp = Math.round(daily.temperature_2m_min[i]);
+        const weatherCode = daily.weather_code[i];
+        const emoji = getWeatherEmoji(weatherCode);
+
+        let rainChance = 0;
+        if (daily.precipitation_probability_max && daily.precipitation_probability_max[i] !== undefined) {
+            rainChance = daily.precipitation_probability_max[i];
+        } else if (daily.precipitation_sum && daily.precipitation_sum[i] > 0) {
+            rainChance = Math.min(Math.round(daily.precipitation_sum[i] * 20), 100);
+        }
 
         const card = document.createElement('div');
         card.className = 'forecast-card glassmorphism';
         card.innerHTML = `
-            <div class="forecast-date">${formattedDate}</div>
-            <i class="forecast-icon ${icon}"></i>
+            <div class="forecast-date">${dayName}</div>
+            <div class="forecast-icon">${emoji}</div>
             <div class="forecast-temp">
-                <div class="forecast-max-temp">${maxTemp}°C</div>
-                <div class="forecast-min-temp">${minTemp}°C</div>
+                <span class="forecast-max-temp">${maxTemp}°</span>
+                <span class="forecast-min-temp">${minTemp}°</span>
             </div>
-            <div class="forecast-condition">${mainCondition}</div>
+            <div class="forecast-rain-chance">
+                <i class="fas fa-droplet"></i> ${rainChance}%
+            </div>
         `;
 
         forecastContainer.appendChild(card);
-    });
-}
-
-function getMostCommon(arr) {
-    if (arr.length === 0) return 'Clear';
-
-    const counts = {};
-    arr.forEach(item => {
-        counts[item] = (counts[item] || 0) + 1;
-    });
-
-    return Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-}
-
-function getCloudEstimate(weatherCode) {
-    const cloudMap = {
-        0: 5,
-        1: 20,
-        2: 45,
-        3: 75,
-        45: 80,
-        48: 85,
-        51: 65,
-        53: 70,
-        55: 80,
-        61: 75,
-        63: 82,
-        65: 86,
-        80: 68,
-        81: 72,
-        82: 78,
-        95: 90
-    };
-
-    return cloudMap[weatherCode] || 30;
-}
-
-function getRainChanceFromCode(weatherCode) {
-    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode)) {
-        return 75;
     }
-    if ([0, 1, 2].includes(weatherCode)) {
-        return 10;
-    }
-    if ([3, 45, 48].includes(weatherCode)) {
-        return 25;
-    }
-    if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {
-        return 35;
-    }
-    if ([95, 96, 99].includes(weatherCode)) {
-        return 90;
-    }
-    return 15;
 }
 
-function getUVIndex(temp, cloudiness) {
-    let base = 5;
-
-    if (temp > 30) base = 9;
-    else if (temp > 25) base = 8;
-    else if (temp > 20) base = 7;
-    else if (temp > 15) base = 6;
-
-    const cloudReduction = (cloudiness / 100) * 3;
-    const uvIndex = Math.max(0, base - cloudReduction);
-
-    return uvIndex;
-}
-
-function getRainChance(condition) {
-    const rainConditions = {
-        'Thunderstorm': 100,
-        'Drizzle': 80,
-        'Rain': 90,
-        'Snow': 60,
-        'Clear': 5,
-        'Clouds': 20,
-        'Mist': 30,
-        'Smoke': 10,
-        'Haze': 15,
-        'Dust': 10,
-        'Fog': 25,
-        'Sand': 5,
-        'Ash': 10,
-        'Squall': 85,
-        'Tornado': 95,
-        'Partly Cloudy': 15,
-        'Mainly Clear': 10,
-        'Cloudy': 25,
-        'Foggy': 30
-    };
-
-    return rainConditions[condition] || 30;
-}
-
-function showError(message) {
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'error-message';
-    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
-
-    mainWeatherSection.parentElement.insertBefore(errorDiv, mainWeatherSection);
-
-    setTimeout(() => {
-        errorDiv.remove();
-    }, 5000);
-}
-
-function showSuccess(message) {
-    const successDiv = document.createElement('div');
-    successDiv.className = 'success-message';
-    successDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-
-    mainWeatherSection.parentElement.insertBefore(successDiv, mainWeatherSection);
-
-    setTimeout(() => {
-        successDiv.remove();
-    }, 3000);
-}
-
-function formatTime(timestamp) {
-    const date = new Date(timestamp * 1000);
-    return date.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric'
-    });
-}
-
-setInterval(() => {
-    if (currentCity && currentCityCoords.lat && currentCityCoords.lon) {
-        fetchWeatherData(currentCity, currentCityCoords.lat, currentCityCoords.lon);
-    }
-}, 600000);
+window.addEventListener('load', () => {});
