@@ -1,0 +1,16 @@
+name: Clean Old Deployments
+
+on:
+  deployment_status:
+
+jobs:
+  clean-old-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old deployments
+        uses: strumwolf/delete-deployment-environment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          environment: github-pages
+          only_deactivated: false
+          max_deployments: 1
